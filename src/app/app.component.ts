@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PhaserGame } from '../game/phaser-game.component';
 import { MainMenu } from '../game/scenes/MainMenu';
 import { CommonModule } from '@angular/common';
 import { EventBus } from '../game/EventBus';
+import { GlobalSceneStateService } from './services/global-scene-state.service';
 
 @Component({
     selector: 'app-root',
@@ -13,12 +14,16 @@ import { EventBus } from '../game/EventBus';
 })
 export class AppComponent implements AfterViewInit
 {
+    // This is a reference from the PhaserGame component
+    @ViewChild(PhaserGame) phaserRef!: PhaserGame;
 
     public spritePosition = { x: 0, y: 0 };
     public canMoveSprite = false;
 
-    // This is a reference from the PhaserGame component
-    @ViewChild(PhaserGame) phaserRef!: PhaserGame;
+    isMainMenuSceneS = this._globalSceneStateSvc.isMainMenuSceneS;
+
+    constructor (private _globalSceneStateSvc: GlobalSceneStateService) {}
+    
 
     ngAfterViewInit()
     {

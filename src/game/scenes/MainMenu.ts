@@ -1,15 +1,18 @@
 import { GameObjects, Scene } from 'phaser';
 
 import { EventBus } from '../EventBus';
+import { inject } from '@angular/core';
+import { GlobalSceneStateService } from '../../app/services/global-scene-state.service';
 
 export class MainMenu extends Scene
 {
+
     background: GameObjects.Image;
     logo: GameObjects.Image;
     title: GameObjects.Text;
     logoTween: Phaser.Tweens.Tween | null;
 
-    constructor ()
+    constructor (private _globalSceneStateSvc: GlobalSceneStateService)
     {
         super('MainMenu');
     }
@@ -26,6 +29,8 @@ export class MainMenu extends Scene
             align: 'center'
         }).setOrigin(0.5).setDepth(100);
 
+        this._globalSceneStateSvc.isMainMenuSceneS.set(true);
+
         EventBus.emit('current-scene-ready', this);
     }
     
@@ -37,7 +42,7 @@ export class MainMenu extends Scene
             this.logoTween = null;
         }
 
-        this.scene.start('Game');
+        this.scene.start('StartYourCareer');
     }
 
     moveLogo (vueCallback: ({ x, y }: { x: number, y: number }) => void)
